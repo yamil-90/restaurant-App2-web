@@ -1,13 +1,16 @@
 import React, {useContext} from 'react';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
-import {FirebaseContext} from '../../firebase'
+import {FirebaseContext} from '../../firebase';
+import {useNavigate} from 'react-router-dom'
 
 
 const NewOrder = () => {
     // add the context with the firebase operation
     const {firebase}= useContext(FirebaseContext);
-    console.log(firebase);
+
+    // redirect after submit
+    const navigate = useNavigate()
 
     // validation and processing of data
     const formik = useFormik({
@@ -31,8 +34,14 @@ const NewOrder = () => {
             .min(10, 'descriptuion must be at least 10 characters long')
             .required('the description is mandatory')
         }),
-        onSubmit: data =>{
-            console.log(data);
+        onSubmit: dish =>{
+            try {
+                dish.available = true
+                firebase.db.collection('products').add(dish)
+                navigate('/menu')
+            } catch (err) {
+                console.log(err);
+            }
         }
     })
 
