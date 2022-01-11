@@ -4,7 +4,7 @@ import 'firebase/compat/firestore';
 
 class Firebase{
   constructor(){
-    if(!app.apps.legth){
+    if(!app.apps.length){
 
       app.initializeApp(firebaseConfig)
     }
